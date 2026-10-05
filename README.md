@@ -59,10 +59,11 @@ We propose a feed-forward, learning-based approach combined with robust telemetr
 
 Our system outputs dense point clouds and textured meshes globally positioned using drone telemetry.
 
-| Output View 1 | Output View 2 |
+| Reconstructed 3D model — overall view | Reconstructed 3D model — alternate view |
 | :---: | :---: |
-| <img src="assets/results/pv-1.png" width="400"/> | <img src="assets/results/pv-2.png" width="400"/> |
-| <img src="assets/results/pv-3.png" width="400"/> | <img src="assets/results/pv-4.png" width="400"/> |
+| <img src="assets/results/reconstruction_view1.png" width="400"/> | <img src="assets/results/reconstruction_view2.png" width="400"/> |
+| **Detailed reconstruction view** | **Point cloud / textured mesh view** |
+| <img src="assets/results/reconstruction_view4.png" width="400"/> | <img src="assets/results/reconstruction_view3.png" width="400"/> |
 
 ---
 
@@ -88,12 +89,20 @@ Our architecture is designed for speed and memory efficiency, achieving **1.86x 
 
 ---
 
-## 📚 Technical Documentation
+## 📚 Technical Documentation & Research
 
 Explore our detailed architectural and evaluation documentation:
-- [System Architecture & Core Components](docs/architecture.md)
-- [Pipeline & Data Flow](docs/pipeline.md)
-- [Evaluation & Speed Engineering](docs/evaluation.md)
+- **[Full Technical Report](docs/technical-report.md)**
+- **[System Architecture & Core Components](docs/architecture.md)**
+- **[Pipeline & Data Flow](docs/pipeline.md)**
+- **[Evaluation & Speed Engineering](docs/evaluation.md)**
+- **[What We Built (Our Technical Contributions)](docs/our-contribution.md)**
+
+Dive into the engineering research and findings that shaped this project:
+- **[Research: Georeferencing & Telemetry Discoveries](docs/research/georeferencing.md)**
+- **[Research: Experiments & Mesh Quality](docs/research/experiments.md)**
+- **[Research: Performance & Hardware Scaling](docs/research/performance.md)**
+- **[Research: Failure Cases & Robustness](docs/research/failure-cases.md)**
 
 ---
 
