@@ -82,6 +82,15 @@ We propose a feed-forward, learning-based approach combined with robust telemetr
 
 ---
 
+## 📚 Technical Documentation
+
+Explore our detailed architectural and evaluation documentation:
+- [System Architecture & Core Components](docs/architecture.md)
+- [Pipeline & Data Flow](docs/pipeline.md)
+- [Evaluation & Speed Engineering](docs/evaluation.md)
+
+---
+
 ## 🔮 Future Work
 
 - Absolute surface accuracy measurements against surveyed ground truth (currently, camera-position agreement with GPS is certified).
@@ -93,3 +102,12 @@ We propose a feed-forward, learning-based approach combined with robust telemetr
 ## 👥 Team
 
 Built with ❤️ for SIH 2026.
+
+---
+
+## 🛠 Reproducibility & Open Source
+
+This repository is currently under evaluation for the Smart India Hackathon 2026. 
+- **Base Model:** We utilize the Apache-2.0 licensed [MapAnything](https://github.com/facebookresearch/map-anything) network for single-pass metric depth. 
+- **Custom IP:** Our chunked inference pipeline, gravity-aware georeferencing engine, telemetry parser, and fast TSDF fusion layers are currently **withheld** as private intellectual property during the judging phase. 
+- **Future Release:** Subject to SIH rules, we intend to release a reproducible Docker container, the full CLI runner, and sample drone telemetry/video sets for public benchmarking.
