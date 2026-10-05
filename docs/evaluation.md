@@ -30,10 +30,10 @@ Processing a 406-second 4K video in 218 seconds translates to processing at **1.
 ### Scaling & Performance Profiling
 
 Our core network backbone scales exceptionally well:
-![Speed Profiling](../assets/profiling_speed.png)
+![Speed Profiling](../assets/results/profiling_speed.png)
 *Inference Speed vs Number of Views*
 
-![Memory Profiling](../assets/profiling_memory.png)
+![Memory Profiling](../assets/results/profiling_memory.png)
 *Peak GPU Memory vs Number of Views*
 
 ## Accuracy Evaluation

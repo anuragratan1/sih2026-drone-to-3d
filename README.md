@@ -6,11 +6,8 @@
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![Status](https://img.shields.io/badge/status-active-success)
 
-## 📌 Project Overview
-
-This repository contains the public-facing documentation and presentation assets for our SIH 2026 submission (SIH26158).
-
-We reconstruct a georeferenced, metric 3D model from **one pass of drone video** without relying on traditional structure-from-motion (SfM) or multi-view stereo (MVS) pipelines. Using a pretrained feed-forward network, we predict per-frame depth and camera pose in metric units. The pipeline accurately fuses the outputs into a textured mesh and point cloud, globally positioned using drone telemetry.
+![Project Hero](assets/results/teaser.png)
+*MapAnything core: Universal feed-forward metric 3D reconstruction from single-pass drone video.*
 
 ---
 
@@ -20,7 +17,7 @@ We reconstruct a georeferenced, metric 3D model from **one pass of drone video**
 
 ---
 
-## ⚠️ Problem Statement
+## ⚠️ The Problem
 
 Traditional drone mapping requires multiple overlapping flight lines (grid patterns) and relies on computationally heavy Structure-from-Motion (SfM) pipelines. This makes rapid, on-the-spot mapping difficult, time-consuming, and resource-intensive. 
 
@@ -30,7 +27,14 @@ We need to turn **one single pass** of drone video (1080p/4K) with GPS and fligh
 
 ## 💡 Our Solution
 
-We propose a feed-forward, learning-based approach combined with robust telemetry alignment:
+We propose a feed-forward, learning-based approach combined with robust telemetry alignment. By replacing traditional SfM with a deep feed-forward network, we achieve massive speedups and robustness to single-pass straight-line flights.
+
+---
+
+## ⚙️ How It Works (High-Level Pipeline)
+
+![Pipeline Flow](assets/diagrams/fig_flow.png)
+*Figure: High-level system pipeline from single-pass drone video to metric 3D mesh.*
 
 1. **Feed-Forward Metric Depth & Pose:** A pretrained network predicts metric depth and pose per frame.
 2. **Keyframe Selection:** Extracts the sharpest frames per time window, rejecting near-duplicates.
@@ -39,25 +43,39 @@ We propose a feed-forward, learning-based approach combined with robust telemetr
 5. **Gravity-Aware Georeferencing:** Aligns time-stamped telemetry (DJI subtitles, CSV, GPX). The scene's estimated vertical is refined against GPS heights. We fit yaw, scale, and translation with outlier rejection (5-fold hold-out), outputting a certified scale-factor report.
 6. **Voxel-based TSDF Fusion:** Fuses the depth into a mesh with voxel sizes derived from image-pixel footprints.
 
----
-
-## 🏗 High-Level Pipeline & Architecture
-
-![Pipeline Flow](assets/fig_flow.png)
-*Figure: High-level system pipeline from single-pass drone video to metric 3D mesh.*
-
-![Georeferencing](assets/fig_georef.png)
+![Georeferencing](assets/diagrams/fig_georef.png)
 *Figure: Gravity-aware georeferencing using flight telemetry.*
 
 ---
 
-## ⚡ Key Capabilities
+## 🖥️ Product & Workspace
 
-- **Ultra-Fast Processing:** A 406-second 4K clip (12,162 frames, DJI Phantom 4 RTK) processed in **3 min 38 s** (measured on 2x T4 GPUs).
-- **Single-Pass Robustness:** Designed specifically for straight flight lines, utilizing a specialized 7-parameter fit (vertical scene direction + yaw/scale/translation).
-- **Hardware-Adaptive Inference:** Memory use, view count, and voxel size are dynamically derived from hardware found at run time. Stream decoding runs on NVDEC at 106 frames/s.
-- **Resilient Georeferencing:** Malformed telemetry never stops the run. All optimizations seamlessly fall back to proven paths if needed.
-- **Rich Outputs:** Generates PLY mesh, point clouds, GLB, COLMAP models, and a camera file with georeference and display transforms.
+![Demo Workspace](assets/demo/gradio_example.png)
+*Figure: Our interactive web workspace allows users to upload videos, run reconstructions, and view metric 3D outputs instantly.*
+
+---
+
+## 📸 Reconstruction Results
+
+Our system outputs dense point clouds and textured meshes globally positioned using drone telemetry.
+
+| Output View 1 | Output View 2 |
+| :---: | :---: |
+| <img src="assets/results/pv-1.png" width="400"/> | <img src="assets/results/pv-2.png" width="400"/> |
+| <img src="assets/results/pv-3.png" width="400"/> | <img src="assets/results/pv-4.png" width="400"/> |
+
+---
+
+## 📊 Evaluation & Speed
+
+Our architecture is designed for speed and memory efficiency, achieving **1.86x real-time** processing on 4K footage.
+
+![Speed Profiling](assets/results/profiling_speed.png)
+*Figure: Inference Speed vs Number of Views, demonstrating excellent scaling.*
+
+**Key Metrics:**
+- **Ultra-Fast Processing:** A 406-second 4K clip processed in **3 min 38 s** (measured on 2x T4 GPUs).
+- **Georeferencing Accuracy:** **< 1.1 m error** on straight passes (vs ~27m with standard 7-DoF fits) due to our gravity-aware formulation.
 
 ---
 
@@ -70,18 +88,6 @@ We propose a feed-forward, learning-based approach combined with robust telemetr
 
 ---
 
-## 📸 Visual Showcase
-
-### Reconstruction Previews
-
-| Point Cloud View 1 | Point Cloud View 2 |
-| :---: | :---: |
-| <img src="assets/pv-1.png" width="400"/> | <img src="assets/pv-2.png" width="400"/> |
-| <img src="assets/pv-3.png" width="400"/> | <img src="assets/pv-4.png" width="400"/> |
-| <img src="assets/pv-5.png" width="400"/> | <img src="assets/pv-6.png" width="400"/> |
-
----
-
 ## 📚 Technical Documentation
 
 Explore our detailed architectural and evaluation documentation:
@@ -91,9 +97,18 @@ Explore our detailed architectural and evaluation documentation:
 
 ---
 
+## 🛠 Reproducibility & Open Source
+
+This repository is currently under evaluation for the Smart India Hackathon 2026. 
+- **Base Model:** We utilize the Apache-2.0 licensed [MapAnything](https://github.com/facebookresearch/map-anything) network for single-pass metric depth. 
+- **Custom IP:** Our chunked inference pipeline, gravity-aware georeferencing engine, telemetry parser, and fast TSDF fusion layers are currently **withheld** as private intellectual property during the judging phase. 
+- **Future Release:** Subject to SIH rules, we intend to release a reproducible Docker container, the full CLI runner, and sample drone telemetry/video sets for public benchmarking.
+
+---
+
 ## 🔮 Future Work
 
-- Absolute surface accuracy measurements against surveyed ground truth (currently, camera-position agreement with GPS is certified).
+- Absolute surface accuracy measurements against surveyed ground truth.
 - Native OBJ, LAS, and GeoTIFF exports.
 - Interactive WebGL-based viewer for immediate browser inspection.
 
@@ -102,12 +117,3 @@ Explore our detailed architectural and evaluation documentation:
 ## 👥 Team
 
 Built with ❤️ for SIH 2026.
-
----
-
-## 🛠 Reproducibility & Open Source
-
-This repository is currently under evaluation for the Smart India Hackathon 2026. 
-- **Base Model:** We utilize the Apache-2.0 licensed [MapAnything](https://github.com/facebookresearch/map-anything) network for single-pass metric depth. 
-- **Custom IP:** Our chunked inference pipeline, gravity-aware georeferencing engine, telemetry parser, and fast TSDF fusion layers are currently **withheld** as private intellectual property during the judging phase. 
-- **Future Release:** Subject to SIH rules, we intend to release a reproducible Docker container, the full CLI runner, and sample drone telemetry/video sets for public benchmarking.
