@@ -1,0 +1,30 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Keys and credentials
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+credentials.json
+client_secret.json
+
+# Secrets
+.secrets
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build/temp
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
